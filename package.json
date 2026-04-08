@@ -1,0 +1,41 @@
+{
+  "name": "ori-panel",
+  "version": "3.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "supabase gen types typescript --db-url > src/types/database.ts"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "next": "^14.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "lucide-react": "^0.453.0",
+    "clsx": "^2.1.0",
+    "tailwind-merge": "^2.5.0",
+    "date-fns": "^4.1.0",
+    "zod": "^3.23.0",
+    "recharts": "^2.13.0",
+    "sonner": "^1.7.0",
+    "class-variance-authority": "^0.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.6.0",
+    "tailwindcss": "^3.4.0",
+    "postcss": "^8.4.0",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.0",
+    "@tailwindcss/typography": "^0.5.0",
+    "@tailwindcss/forms": "^0.5.0"
+  }
+}
