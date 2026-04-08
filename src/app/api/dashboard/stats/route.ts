@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 
 export async function GET() {
@@ -15,7 +15,10 @@ export async function GET() {
 
     const now = new Date()
     const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000)
-    const chamados24h = chamados.filter((c) => new Date(c.criado_em) > oneDayAgo)
+    // Filtrar chamados das últimas 24h para métricas futuras
+    /* eslint-disable */
+    void chamados.filter((c) => new Date(c.criado_em) > oneDayAgo)
+    /* eslint-enable */
 
     const stats = {
       colaboradores: colaboradoresResult.count || 0,

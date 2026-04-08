@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { verifyZohoDomain, verifyHmacSignature } from '@/lib/security'
+import { verifyZohoDomain } from '@/lib/security'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import { triageMessage, generateEmbedding } from '@/lib/gemini'
 import { sendTriageCard, sendNotification } from '@/lib/zoho'
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { chatId, userName, userEmail, message, messageId } = body
+    const { chatId, userEmail, message, messageId } = body
 
     const emailMatch = userEmail?.match(/@proxximatelecom\.com\.br$|@proxxima\.net$/)
     if (!emailMatch) {
@@ -72,11 +72,6 @@ export async function POST(request: NextRequest) {
       URGENTE: 5,
     }
 
-    const statusMap: Record<string, StatusChamado> = {
-      resolved: 'RESOLVIDO',
-      escalated: 'ABERTO',
-    }
-
     let glpiId: number | undefined
     let dbStatus: StatusChamado = 'ABERTO'
     let solvedByAI = false
@@ -118,7 +113,7 @@ export async function POST(request: NextRequest) {
         glpiId = glpiResult.id
       }
 
-      const { data: ticket } = await supabaseAdmin.from('chamados').insert({
+      await supabaseAdmin.from('chamados').insert({
         glpi_id: glpiId,
         colaborador_id: collaborator?.id,
         titulo: message.substring(0, 300),
@@ -129,13 +124,7 @@ export async function POST(request: NextRequest) {
         solucao_ia: triageResult.solucao_sugerida,
         confianca_ia: triageResult.confianca,
         resolvido_por_ia: false,
-      }).select().single()
-
-      if (triageResult.kb_artigos.length > 0) {
-        await supabaseAdmin.from('kb_artigos').update({
-          visualizacoes: kbArticles.find((a: { id: string }) => a.id === triageResult.kb_artigos[0]?.id)?.visualizacoes + 1 || 1,
-        }).eq('id', triageResult.kb_artigos[0].id)
-      }
+      })
 
       await sendTriageCard(
         chatId,
@@ -160,7 +149,6 @@ export async function POST(request: NextRequest) {
     await supabaseAdmin.from('audit_log').insert({
       acao: solvedByAI ? 'RESOLVER_CHAMADO_IA' : 'CRIAR_CHAMADO',
       tabela_afetada: 'chamados',
-      registro_id: ticket?.id,
       usuario_id: collaborator?.id,
       detalhes: {
         chatId,

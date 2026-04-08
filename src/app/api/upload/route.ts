@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: result.error }, { status: 500 })
     }
 
-    const { data: tarefa, error: tarefaError } = await supabaseAdmin
+    const { data: tarefa } = await supabaseAdmin
       .from('tarefas_manuais')
       .select('evidencias')
       .eq('id', tarefaId)

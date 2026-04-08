@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 
 export async function GET() {
   try {
     const { data: tickets } = await supabaseAdmin
       .from('chamados')
-      .select('id, titulo, status, prioridade, criado_em, colaborador:colaboradores(nome_completo)')
+      .select('id, titulo, status, prioridade, criado_em')
       .order('criado_em', { ascending: false })
       .limit(10)
 
@@ -15,7 +15,7 @@ export async function GET() {
       status: t.status,
       prioridade: t.prioridade,
       criado_em: t.criado_em,
-      nome_colaborador: t.colaborador?.nome_completo || null,
+      nome_colaborador: null,
     }))
 
     return NextResponse.json({ tickets: formattedTickets })

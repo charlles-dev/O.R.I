@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase-admin'
 import { verifyHmacSignature } from '@/lib/security'
 import { refreshZohoToken } from '@/lib/zoho'
 
