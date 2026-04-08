@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { chatId, userName, userEmail, message, messageId } = body
 
-    const emailMatch = userEmail?.match(/@proxximatelecom\.com\.br$/)
+    const emailMatch = userEmail?.match(/@proxximatelecom\.com\.br$|@proxxima\.net$/)
     if (!emailMatch) {
       return NextResponse.json({ error: 'Invalid domain' }, { status: 400 })
     }

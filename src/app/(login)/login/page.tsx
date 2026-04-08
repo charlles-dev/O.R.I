@@ -36,7 +36,7 @@ export default function LoginPage() {
         return
       }
 
-      document.cookie = `session_token=${data.token}; path=/; max-age=86400`
+      document.cookie = `session_token=${data.token}; path=/; max-age=86400; SameSite=Lax`
       router.push(redirect)
     } catch {
       setError('Erro de conexao')

@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Email e senha sao obrigatorios' }, { status: 400 })
     }
 
-    if (!email.endsWith('@proxximatelecom.com.br')) {
+    if (!email.endsWith('@proxximatelecom.com.br') && !email.endsWith('@proxxima.net')) {
       return NextResponse.json({ error: 'Use email corporativo' }, { status: 400 })
     }
 
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Colaborador nao encontrado' }, { status: 401 })
     }
 
-    const token = Buffer.from(`${collaborator.id}:${Date.now()}`).toString('base64')
+    const token = collaborator.id
 
     await supabaseAdmin.from('audit_log').insert({
       acao: 'LOGIN',
