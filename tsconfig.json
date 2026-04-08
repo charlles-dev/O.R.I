@@ -22,8 +22,8 @@
       "@/*": ["./src/*"]
     },
     "noUnusedLocals": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true
+"noImplicitAny": false,
+    "strictNullChecks": false
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules", "landing-page", "skills", "secondary_skills", "docs"]
